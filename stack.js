@@ -151,6 +151,59 @@ function removeDuplicate(str){
     console.log(res)
 }
 
-removeDuplicate("aabcaabb")
+// removeDuplicate("aabcaabb")
 
 
+//(Q) sum of subarray minimum
+function previousMinimumElelment(arr,n){ // This function return prevoius minimum element
+    let st = new Stack();
+    let prevMin = new Array(n);
+    for(let i=0;i<n;i++){
+        while(!st.isEmpty() && arr[st.peek()]>arr[i]){
+            st.pop();
+        }
+        if(st.isEmpty()){
+            prevMin[i]=-1;
+        }else{
+            prevMin[i]=st.peek();
+        }
+        st.push(i)
+    }
+    return prevMin
+}
+
+function nextsMinimumElelment(arr,n){ // This function return next minimum element
+    let st = new Stack();
+    let nextMin = new Array(n);
+    for(let i=n-1;i>=0;i--){
+        while(!st.isEmpty() && arr[st.peek()]>arr[i]){
+            st.pop();
+        }
+        if(st.isEmpty()){
+            nextMin[i]=n;
+        }else{
+            nextMin[i]=st.peek();
+        }
+        st.push(i)
+    }
+    return nextMin
+}
+function sumSubarrayMinimums(arr,n){
+    let prevMin = previousMinimumElelment(arr,n);
+    let nextMin = nextsMinimumElelment(arr,n);
+    let totalSum = 0;
+
+    for(let i=0;i<n;i++){
+        let leftDistance = i-prevMin[i];
+        let rightDistance = nextMin[i] - i;
+        let occurenceOfCurrentAsMin = leftDistance * rightDistance; // This willgives how many times that element occur as minimum 
+
+        // arr[i] * occurenceOfCurrentAsMin - > This code tell us how many times arr[i] occur as a minimum element in the subarray
+        totalSum += arr[i] * occurenceOfCurrentAsMin;
+
+        console.log(arr[i]," ",occurenceOfCurrentAsMin)
+    }
+    return totalSum;
+}
+
+console.log(sumSubarrayMinimums([3,1,2,4],4))
