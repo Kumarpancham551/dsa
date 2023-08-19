@@ -182,5 +182,5 @@ function findNorRepeating(input){
 // findNorRepeating(input)
 
 
-
+module.exports = Queue;
 

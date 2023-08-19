@@ -1,3 +1,7 @@
+let Queue = require('./queue')
+
+
+
 class Node {
     constructor(data){
         this.data = data;
@@ -158,6 +162,33 @@ function printAllLevels(root){
         console.log("------------------")
     }
 }
+
+// optimzation of level order traversing
+function levelOrderOptimized(root){
+   if(!root) return;
+   let queue = new Queue();
+   queue.enqueue(root);
+   queue.enqueue(null);
+   while(!queue.isEmpty()){
+        let n = queue.getFront();
+        queue.dequeue();
+        if(n == null){
+            console.log("-------------");
+            if(!queue.isEmpty()){
+                queue.enqueue(null)
+            }
+            continue;
+        }
+        console.log(n.data);
+        if(n.left != null){
+            queue.enqueue(n.left)
+        }
+        if(n.right != null){
+            queue.enqueue(n.right)
+        }
+   }
+   
+}
 let bst = new Node(10);
 bst.left = new Node(20);
 bst.right = new Node(30);
@@ -168,4 +199,6 @@ bst.right.right = new Node(60);
 
 //printLevelK(bst,0,1)
 //console.log(hightOfTree(bst))
-printAllLevels(bst)
+//printAllLevels(bst)
+
+//levelOrderOptimized(bst)
