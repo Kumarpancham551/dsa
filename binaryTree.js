@@ -190,15 +190,108 @@ function levelOrderOptimized(root){
    
 }
 let bst = new Node(10);
-bst.left = new Node(20);
-bst.right = new Node(30);
+bst.left = new Node(5);
+bst.right = new Node(15);
 
-bst.left.left = new Node(40);
-bst.left.right = new Node(50);
-bst.right.right = new Node(60);
+bst.left.left = new Node(4);
+bst.left.right = new Node(6);
+bst.right.right = new Node(19);
 
 //printLevelK(bst,0,1)
 //console.log(hightOfTree(bst))
 //printAllLevels(bst)
 
 //levelOrderOptimized(bst)
+
+
+// Print all the nodes visible in the rightview of the Binary Tree or print right view of Tree
+
+function rightViewOfBinaryTree(root){
+    if(!root) return;
+    let result = [];
+    let queue = new Queue();
+    queue.enqueue(root);
+    queue.enqueue(null);
+   // result.push(root.data)
+    while(!queue.isEmpty()){
+         let n = queue.getFront();
+         queue.dequeue();
+         if(!queue.isEmpty() && queue.getFront() == null){
+            result.push(n.data)
+         }
+         if(n == null){
+          //   console.log("-------------");
+             if(!queue.isEmpty()){
+                 queue.enqueue(null)
+             }
+             continue;
+         }
+         if(n.left != null){
+             queue.enqueue(n.left)
+         }
+         if(n.right != null){
+             queue.enqueue(n.right)
+         }
+    }
+    return result;
+    
+ }
+
+  //console.log(rightViewOfBinaryTree(bst))
+
+
+  // Print all the nodes visible in the left view of the Binary Tree or print left view of Tree
+
+  function leftViewOfBinaryTree(root){
+    if(!root) return;
+    let result = [];
+    let queue = new Queue();
+    queue.enqueue(root);
+    queue.enqueue(null);
+    result.push(root.data)
+    while(!queue.isEmpty()){
+         let n = queue.getFront();
+         queue.dequeue();
+         if(n == null){
+         
+             if(!queue.isEmpty()){
+                 queue.enqueue(null);
+                 result.push(queue.getFront().data);
+             }
+             continue;
+         }
+         if(n.left != null){
+             queue.enqueue(n.left)
+         }
+         if(n.right != null){
+             queue.enqueue(n.right)
+         }
+    }
+    return result;
+    
+ }
+
+// console.log(leftViewOfBinaryTree(bst))
+
+
+// Function to check tree is BST or not ?
+
+function isValidBST(root){
+    return isBST(root,Number.MIN_VALUE, Number.MAX_VALUE);   
+}
+
+function isBST(node,maxLeft, minRight){
+    if(node == null){ // base case
+        return true;
+    }
+    if(maxLeft > node.data || node.data > minRight){
+        return false;
+    }
+    let leftSubTreeIsBST = isBST(node.left,maxLeft,node.data)
+    let rightSubTreeIsBST = isBST(node.right,node.data,minRight)
+
+    return leftSubTreeIsBST && rightSubTreeIsBST
+    
+}
+
+console.log(isValidBST(bst))
